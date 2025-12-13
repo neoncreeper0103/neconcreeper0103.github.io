@@ -16,6 +16,10 @@
         {
             text-align: center;
         }
+        img
+        {
+            height: 100px;
+        }
         td
         {
             width: 150px;
@@ -33,33 +37,20 @@
     <script>
         function makeTable()
         {
-            table = "";
-            // 1번째 행 (노가다)
+            let table = "";
+
             table += "<tr>";
-            table += "<td>";
-            table += "</td>";
-            table += "<td>";
-            table += "월";
-            table += "</td>";
-            table += "<td>";
-            table += "화";
-            table += "</td>";
-            table += "<td>";
-            table += "수";
-            table += "</td>";
-            table += "<td>";
-            table += "목";
-            table += "</td>";
-            table += "<td>";
-            table += "금";
-            table += "</td>";
-            table += "<td>";
-            table += "토";
-            table += "</td>";
-            table += "<td>";
-            table += "일";
-            table += "</td>";
-            table += "</tr>";
+            table += "<td><img src='../source/차차.jpg'></td>";
+
+            const days = ["월", "화", "수", "목", "금", "토", "일"];
+
+            for(const day of days)
+            {
+                table += "<td>";
+                table += day;
+                table += "</td>";
+            }
+            table += "</tr>"
             
             // 나머지는 for문 돌리기
             for(let i = 1; i <= 8; i++)
@@ -75,7 +66,7 @@
                     }
                     else
                     {
-                        table += "<td class=\"bookable\" onclick=\"book()\" type=\"button\">";
+                        table += "<td class=\"bookable\" onclick=\"book(this)\">";
                         table += "예약 가능";
                         table += "</td>";
                     }
@@ -83,42 +74,30 @@
                 table += "</tr>";
             }
 
-            document.getElementById("mainTable").innerHTML += table;
+            document.getElementById("mainTable").innerHTML = table;
         }
         
         // 예약 함수
-        function book()
+        function book(cell)
         {
-            table = document.getElementById("mainTable");
-
-            for(let i = 1; i <= 8; i++){
-                for(let j = 1; j < 8; j++){
-                    table.rows[i].cells[j].onclick = function(){
-                        if(confirm("예약하시겠습니까?") == true){
-                            table.rows[i].cells[j].className = "booked";
-                            table.rows[i].cells[j].setAttribute("onclick", "unbook()");
-                            table.rows[i].cells[j].innerText = "예약 완료";
-                        }
-                    }
-                }
+            if(confirm("예약하시겠습니까?"))
+            {
+                cell.className = "booked";
+                cell.innerText = "예약 완료";
+                // gpt에서 추천한 문법...setAttribute는 안쓰인다고 한다
+                cell.onclick = () => unbook(cell);
             }
         }
 
         // 예약취소 함수
-        function unbook()
+        function unbook(cell)
         {
-            table = document.getElementById("mainTable");
-
-            for(let i = 1; i <= 8; i++){
-                for(let j = 1; j < 8; j++){
-                    table.rows[i].cells[j].onclick = function(){
-                        if(confirm("예약을 취소하시겠습니까?") == true){
-                            table.rows[i].cells[j].className = "bookable";
-                            table.rows[i].cells[j].setAttribute("onclick", "book()");
-                            table.rows[i].cells[j].innerText = "예약 가능";
-                        }
-                    }
-                }
+            if(confirm("예약을 취소하시겠습니까?"))
+            {
+                cell.className = "bookable";
+                cell.innerText = "예약 가능";
+                // 얘도 마찬가지
+                cell.onclick = () => book(cell);
             }
         }
 
