@@ -1,122 +1,136 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>시간표</title>
+    <title>Document</title>
     <style>
-        th
+        body
         {
-            width: 100px;
-            height: 100px;
+            /* 이게 텍스트 드래그를 막아준다더라 */
+            -webkit-user-select:none;
+            -moz-user-select:none;
+            -ms-user-select:none;
+            user-select:none;
+        }
+        div
+        {
+            text-align: center;
         }
         td
         {
-            width: 100px;
+            width: 150px;
             height: 100px;
         }
+        .bookable
+        {
+            background-color: rgb(0, 216, 0);
+        }
+        .booked
+        {
+            background-color: red;
+        }
     </style>
+    <script>
+        function makeTable()
+        {
+            table = "";
+            // 1번째 행 (노가다)
+            table += "<tr>";
+            table += "<td>";
+            table += "</td>";
+            table += "<td>";
+            table += "월";
+            table += "</td>";
+            table += "<td>";
+            table += "화";
+            table += "</td>";
+            table += "<td>";
+            table += "수";
+            table += "</td>";
+            table += "<td>";
+            table += "목";
+            table += "</td>";
+            table += "<td>";
+            table += "금";
+            table += "</td>";
+            table += "<td>";
+            table += "토";
+            table += "</td>";
+            table += "<td>";
+            table += "일";
+            table += "</td>";
+            table += "</tr>";
+            
+            // 나머지는 for문 돌리기
+            for(let i = 1; i <= 8; i++)
+            {
+                table += "<tr>";
+                for(let j = 1; j <= 8; j++)
+                {
+                    if(j == 1)
+                    {
+                        table += "<td>";
+                        table += String(i) + "시";
+                        table += "</td>";
+                    }
+                    else
+                    {
+                        table += "<td class=\"bookable\" onclick=\"book()\" type=\"button\">";
+                        table += "예약 가능";
+                        table += "</td>";
+                    }
+                }
+                table += "</tr>";
+            }
+
+            document.getElementById("mainTable").innerHTML += table;
+        }
+        
+        // 예약 함수
+        function book()
+        {
+            table = document.getElementById("mainTable");
+
+            for(let i = 1; i <= 8; i++){
+                for(let j = 1; j < 8; j++){
+                    table.rows[i].cells[j].onclick = function(){
+                        if(confirm("예약하시겠습니까?") == true){
+                            table.rows[i].cells[j].className = "booked";
+                            table.rows[i].cells[j].setAttribute("onclick", "unbook()");
+                            table.rows[i].cells[j].innerText = "예약 완료";
+                        }
+                    }
+                }
+            }
+        }
+
+        // 예약취소 함수
+        function unbook()
+        {
+            table = document.getElementById("mainTable");
+
+            for(let i = 1; i <= 8; i++){
+                for(let j = 1; j < 8; j++){
+                    table.rows[i].cells[j].onclick = function(){
+                        if(confirm("예약을 취소하시겠습니까?") == true){
+                            table.rows[i].cells[j].className = "bookable";
+                            table.rows[i].cells[j].setAttribute("onclick", "book()");
+                            table.rows[i].cells[j].innerText = "예약 가능";
+                        }
+                    }
+                }
+            }
+        }
+
+    </script>
 </head>
 <body>
-    <caption>
-        전지혁의 2학기 시간표
-    </caption>
-    <table border="1">
-        <thead>
-            <tr>
-                <th><img src="source/차차.png" alt="차차" width="100" height="100"></th>
-                <th>월</th>
-                <th>화</th>
-                <th>수</th>
-                <th>목</th>
-                <th>금</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>9시</td>
-                <td>공강</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>10시</td>
-                <td>교양민법</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>11시</td>
-                <td>교양민법</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>12시</td>
-                <td>교양민법</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>1시</td>
-                <td>공강</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>2시</td>
-                <td>공강</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>3시</td>
-                <td>공강</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>4시</td>
-                <td>공강</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>5시</td>
-                <td>공강</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-            <tr>
-                <td>6시</td>
-                <td>공강</td>
-                <td>나</td>
-                <td>다</td>
-                <td>라</td>
-                <td>마</td>
-            </tr>
-        </tbody>
-    </table>
+    <div>
+        <table id="mainTable" border="1"></table>
+    </div>
 
-    <table border="1">
-
-    </table>
+    <script>
+        makeTable();
+    </script>
 </body>
 </html>
